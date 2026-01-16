@@ -3,137 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invievil | Dossier</title>
+    <title>Invievil | OS 2.0</title>
     <style>
-        :root {
-            --neon-green: #00ff00;
-            --bg-dark: #0a0a0a;
-        }
-
+        :root { --neon: #00ff00; --bg: #050505; }
+        
         body {
-            background-color: var(--bg-dark);
-            color: var(--neon-green);
-            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg);
+            color: var(--neon);
+            font-family: 'Fira Code', monospace;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             margin: 0;
+            overflow: hidden;
+        }
+
+        .terminal {
+            width: 90%;
+            max-width: 400px;
             padding: 20px;
-            box-sizing: border-box;
-            text-shadow: 0 0 5px var(--neon-green);
+            border: 1px solid var(--neon);
+            background: rgba(0, 20, 0, 0.95);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+            position: relative;
         }
 
-        /* Эффект шума на фоне */
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 2px);
-            pointer-events: none;
-            z-index: -1;
+        /* Анимация глитча для логотипа */
+        .glitch-img {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            display: block;
+            border: 1px solid var(--neon);
+            animation: glitch 3s infinite;
         }
 
-        .avatar {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            border: 2px solid var(--neon-green);
-            box-shadow: 0 0 20px var(--neon-green);
-            margin-bottom: 15px;
-            animation: pulse 2s infinite;
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            2% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); }
+            4% { transform: translate(2px, -2px); filter: hue-rotate(0deg); }
+            6% { transform: translate(0); }
         }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 10px var(--neon-green); }
-            50% { box-shadow: 0 0 25px var(--neon-green); }
-            100% { box-shadow: 0 0 10px var(--neon-green); }
+        /* Эффект печатающегося текста */
+        .typing {
+            overflow: hidden;
+            border-right: .15em solid var(--neon);
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
         }
 
-        .dossier-header {
-            text-align: center;
-            border: 1px solid var(--neon-green);
-            padding: 8px 15px;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-weight: bold;
-        }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--neon); } }
 
-        .info-block {
-            width: 100%;
-            max-width: 350px;
-            border-left: 3px solid var(--neon-green);
-            padding-left: 15px;
-            margin-bottom: 20px;
-        }
+        .info-row { margin: 10px 0; font-size: 0.8rem; opacity: 0; animation: fadeIn 0.5s forwards; }
+        .info-row:nth-child(2) { animation-delay: 1s; }
+        .info-row:nth-child(3) { animation-delay: 1.5s; }
+        .info-row:nth-child(4) { animation-delay: 2s; }
 
-        .label { color: #888; font-size: 0.75rem; text-transform: uppercase; }
-        .value { font-size: 1.1rem; margin-bottom: 12px; color: var(--neon-green); }
-        .value a { color: var(--neon-green); text-decoration: none; }
+        @keyframes fadeIn { to { opacity: 1; } }
 
-        .links-grid {
+        .btn-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            width: 100%;
-            max-width: 350px;
-            margin-top: 10px;
+            margin-top: 20px;
         }
 
-        .links-grid a {
-            color: var(--neon-green);
-            text-decoration: none;
-            border: 1px solid var(--neon-green);
-            padding: 12px 5px;
+        .btn {
+            border: 1px solid var(--neon);
+            padding: 12px;
             text-align: center;
-            font-size: 0.8rem;
+            text-decoration: none;
+            color: var(--neon);
+            font-size: 0.7rem;
+            background: transparent;
             transition: 0.3s;
-            background: rgba(0, 255, 0, 0.05);
         }
 
-        .links-grid a:hover {
-            background: var(--neon-green);
-            color: black;
-            box-shadow: 0 0 15px var(--neon-green);
-        }
+        .btn:active { background: var(--neon); color: black; }
 
-        .footer-code {
-            font-size: 0.6rem;
-            margin-top: 40px;
-            opacity: 0.4;
-            letter-spacing: 2px;
+        /* Бегущая строка внизу */
+        .ticker {
+            position: absolute;
+            bottom: 5px;
+            width: 100%;
+            font-size: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            opacity: 0.5;
         }
+        .ticker-text {
+            display: inline-block;
+            animation: ticker 10s linear infinite;
+        }
+        @keyframes ticker { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
     </style>
 </head>
 <body>
 
-    <img src="logo.png" alt="Invievil" class="avatar">
-
-    <div class="dossier-header">
-        Access Granted: Nikita
-    </div>
-
-    <div class="info-block">
-        <div class="label">Codename:</div>
-        <div class="value">Invievil</div>
+    <div class="terminal">
+        <img src="logo.png" class="glitch-img" alt="IV">
         
-        <div class="label">Specialization:</div>
-        <div class="value">Cyber Security / Dev</div>
+        <div class="typing">> INITIALIZING DOSSIER...</div>
         
-        <div class="label">Secure Line:</div>
-        <div class="value"><a href="tel:+77714912771">+7 (XXX) XXX-XX-XX</a></div>
-    </div>
+        <div style="margin-top: 20px;">
+            <div class="info-row">AGENT: NIKITA</div>
+            <div class="info-row">CODENAME: INVIEVIL</div>
+            <div class="info-row">SECURE_TEL: <a href="tel:+7XXXXXXXXXX" style="color:white; text-decoration:none;">+7 (___) ___-__-__</a></div>
+        </div>
 
-    <div class="links-grid">
-        <a href="https://t.me/sseone">TELEGRAM</a>
-        <a href="https://instagram.com/mne.ne.poh.ui">INSTAGRAM</a>
-        <a href="https://github.com/Invievil" style="grid-column: span 2;">GITHUB REPOSITORY</a>
-    </div>
+        <div class="btn-grid">
+            <a href="https://t.me/ssone" class="btn">TELEGRAM</a>
+            <a href="https://instagram.com/mne.ne.poh.ui" class="btn">INSTAGRAM</a>
+            <a href="https://github.com/Invievil" class="btn" style="grid-column: span 2;">ACCESS GITHUB TERMINAL</a>
+        </div>
 
-    <div class="footer-code">
-        [ ENCRYPTION: AES-256 | VER: 2.026 ]
+        <div class="ticker">
+            <div class="ticker-text">
+                ENC_DATA: 48 65 6c 6c 6f 20 4e 69 6b 69 74 61 | SYSTEM_STATUS: SECURED | NODE_ID: 0x21AF |
+            </div>
+        </div>
     </div>
 
 </body>
