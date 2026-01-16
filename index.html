@@ -3,131 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invievil | OS 2.0</title>
+    <title>Invievil | Admin Dossier</title>
     <style>
-        :root { --neon: #00ff00; --bg: #050505; }
+        :root { --neon: #00ff00; --bg: #000; }
+        * { box-sizing: border-box; }
         
-        body {
-            background-color: var(--bg);
+        body, html {
+            background: var(--bg);
             color: var(--neon);
             font-family: 'Fira Code', monospace;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin: 0; padding: 0;
+            overflow-x: hidden;
             min-height: 100vh;
-            margin: 0;
-            overflow: hidden;
         }
 
-        .terminal {
-            width: 90%;
-            max-width: 400px;
+        /* Матричный фон на Canvas */
+        #matrix {
+            position: fixed; top: 0; left: 0;
+            z-index: -1; width: 100%; height: 100%;
+            opacity: 0.3;
+        }
+
+        .main-container {
             padding: 20px;
-            border: 1px solid var(--neon);
-            background: rgba(0, 20, 0, 0.95);
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Главная рамка из референса */
+        .dossier-frame {
+            border: 2px solid var(--neon);
+            border-radius: 15px;
+            padding: 20px;
+            width: 100%;
+            max-width: 450px;
+            background: rgba(0, 10, 0, 0.85);
+            box-shadow: 0 0 25px rgba(0, 255, 0, 0.15);
+            backdrop-filter: blur(5px);
             position: relative;
         }
 
-        /* Анимация глитча для логотипа */
-        .glitch-img {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 20px;
-            display: block;
+        .avatar-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            border: 2px solid var(--neon);
+            padding: 5px;
+            box-shadow: 0 0 15px var(--neon);
+            animation: breathe 3s infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            margin: 15px 0 10px;
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .section-title::before { content: "> "; margin-right: 5px; }
+
+        .data-grid {
+            border-left: 2px solid rgba(0, 255, 0, 0.3);
+            padding-left: 15px;
+            font-size: 0.8rem;
+            line-height: 1.6;
+        }
+
+        .arsenal {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .tag {
+            background: rgba(0, 255, 0, 0.15);
             border: 1px solid var(--neon);
-            animation: glitch 3s infinite;
+            padding: 2px 8px;
+            font-size: 0.65rem;
+            text-transform: uppercase;
         }
 
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            2% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); }
-            4% { transform: translate(2px, -2px); filter: hue-rotate(0deg); }
-            6% { transform: translate(0); }
-        }
-
-        /* Эффект печатающегося текста */
-        .typing {
-            overflow: hidden;
-            border-right: .15em solid var(--neon);
-            white-space: nowrap;
-            margin: 0 auto;
-            letter-spacing: .15em;
-            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
-        }
-
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--neon); } }
-
-        .info-row { margin: 10px 0; font-size: 0.8rem; opacity: 0; animation: fadeIn 0.5s forwards; }
-        .info-row:nth-child(2) { animation-delay: 1s; }
-        .info-row:nth-child(3) { animation-delay: 1.5s; }
-        .info-row:nth-child(4) { animation-delay: 2s; }
-
-        @keyframes fadeIn { to { opacity: 1; } }
-
-        .btn-grid {
+        .links-block {
+            margin-top: 25px;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-top: 20px;
         }
 
         .btn {
             border: 1px solid var(--neon);
-            padding: 12px;
-            text-align: center;
-            text-decoration: none;
             color: var(--neon);
-            font-size: 0.7rem;
-            background: transparent;
+            text-decoration: none;
+            padding: 12px;
+            font-size: 0.75rem;
+            text-align: center;
             transition: 0.3s;
+            background: rgba(0, 255, 0, 0.05);
         }
 
         .btn:active { background: var(--neon); color: black; }
 
-        /* Бегущая строка внизу */
-        .ticker {
-            position: absolute;
-            bottom: 5px;
-            width: 100%;
-            font-size: 0.5rem;
-            white-space: nowrap;
-            overflow: hidden;
+        .footer-line {
+            margin-top: 20px;
+            font-size: 0.6rem;
             opacity: 0.5;
+            text-align: center;
+            border-top: 1px dashed var(--neon);
+            padding-top: 10px;
         }
-        .ticker-text {
-            display: inline-block;
-            animation: ticker 10s linear infinite;
-        }
-        @keyframes ticker { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
     </style>
 </head>
 <body>
 
-    <div class="terminal">
-        <img src="logo.png" class="glitch-img" alt="IV">
+<canvas id="matrix"></canvas>
+
+<div class="main-container">
+    <div class="dossier-frame">
         
-        <div class="typing">> INITIALIZING DOSSIER...</div>
-        
-        <div style="margin-top: 20px;">
-            <div class="info-row">AGENT: NIKITA</div>
-            <div class="info-row">CODENAME: INVIEVIL</div>
-            <div class="info-row">SECURE_TEL: <a href="tel:+7XXXXXXXXXX" style="color:white; text-decoration:none;">+7 (___) ___-__-__</a></div>
+        <div class="avatar-container">
+            <img src="logo.png" alt="Invievil" class="avatar">
+            <div style="font-size: 0.7rem; margin-top: 10px;">invievil_github.png</div>
         </div>
 
-        <div class="btn-grid">
-            <a href="https://t.me/ssone" class="btn">TELEGRAM</a>
+        <div class="section-title">IDENTITY_FILE:</div>
+        <div class="data-grid">
+            // Name: <span style="color:white">Nikita</span><br>
+            // Access Level: <span style="color:red">ADMIN</span><br>
+            // Status: <span style="color:white">Junior Security Researcher</span><br>
+            // Building: <span style="color:white">Digital Garden (ALICE)</span>
+        </div>
+
+        <div class="section-title">ACCESS_LOGS:</div>
+        <div class="data-grid" style="font-size: 0.7rem; color: #888;">
+            > [2026-01-16] Initializing<br>
+            > [2026-01-17] Linux Audit<br>
+            > [2026-01-18] Designing Media Space
+        </div>
+
+        <div class="section-title">ARSENAL:</div>
+        <div class="arsenal">
+            <span class="tag">Python</span>
+            <span class="tag">WebSec</span>
+            <span class="tag">Linux</span>
+            <span class="tag">Obsidian</span>
+            <span class="tag">Crypto</span>
+            <span class="tag">Network</span>
+        </div>
+
+        <div class="section-title">CONNECT_TO_NODE:</div>
+        <div class="data-grid">
+            // Phone: <a href="tel:+77714912771" style="color:white; text-decoration:none;">+7 (___) ___-__-__</a>
+        </div>
+
+        <div class="links-block">
+            <a href="https://t.me/sseone" class="btn">TELEGRAM</a>
             <a href="https://instagram.com/mne.ne.poh.ui" class="btn">INSTAGRAM</a>
-            <a href="https://github.com/Invievil" class="btn" style="grid-column: span 2;">ACCESS GITHUB TERMINAL</a>
+            <a href="https://github.com/Invievil" class="btn" style="grid-column: span 2;">End of File. System_Secured.</a>
         </div>
 
-        <div class="ticker">
-            <div class="ticker-text">
-                ENC_DATA: 48 65 6c 6c 6f 20 4e 69 6b 69 74 61 | SYSTEM_STATUS: SECURED | NODE_ID: 0x21AF |
-            </div>
+        <div class="footer-line">
+            FOOTTS: ----------------------------------
         </div>
     </div>
+</div>
+
+<script>
+    // Матрица на фоне
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()";
+    const fontSize = 10;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+    for (let i = 0; i < columns; i++) drops[i] = 1;
+
+    function draw() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#0F0";
+        ctx.font = fontSize + "px monospace";
+        for (let i = 0; i < drops.length; i++) {
+            const text = letters[Math.floor(Math.random() * letters.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        }
+    }
+    setInterval(draw, 33);
+</script>
 
 </body>
 </html>
