@@ -3,208 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invievil | Admin Dossier</title>
+    <title>Для Кати • Страна Чудес</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Gabriela&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #00ff00; --bg: #000; }
-        * { box-sizing: border-box; }
-        
-        body, html {
-            background: var(--bg);
-            color: var(--neon);
-            font-family: 'Fira Code', monospace;
-            margin: 0; padding: 0;
-            overflow-x: hidden;
+        :root {
+            --gold: #d4af37;
+            --dark: #0a0a0a;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--dark) url('https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=2000') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--gold);
+            font-family: 'Gabriela', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
+            overflow: hidden;
         }
 
-        /* Матричный фон на Canvas */
-        #matrix {
-            position: fixed; top: 0; left: 0;
-            z-index: -1; width: 100%; height: 100%;
-            opacity: 0.3;
+        /* Затемнение фона для читаемости */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1;
         }
 
-        .main-container {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Главная рамка из референса */
-        .dossier-frame {
-            border: 2px solid var(--neon);
-            border-radius: 15px;
-            padding: 20px;
-            width: 100%;
-            max-width: 450px;
-            background: rgba(0, 10, 0, 0.85);
-            box-shadow: 0 0 25px rgba(0, 255, 0, 0.15);
-            backdrop-filter: blur(5px);
+        .container {
             position: relative;
-        }
-
-        .avatar-container {
+            z-index: 10;
+            background: rgba(10, 10, 10, 0.85);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.3);
+            max-width: 500px;
             text-align: center;
-            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
         }
 
-        .avatar {
-            width: 100px; height: 100px;
-            border-radius: 50%;
-            border: 2px solid var(--neon);
-            padding: 5px;
-            box-shadow: 0 0 15px var(--neon);
-            animation: breathe 3s infinite ease-in-out;
+        h1 {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px var(--gold);
+            animation: glow 3s infinite alternate;
         }
 
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 1; }
+        @keyframes glow {
+            from { text-shadow: 0 0 10px var(--gold); }
+            to { text-shadow: 0 0 25px #fff, 0 0 35px var(--gold); }
         }
 
-        .section-title {
-            font-size: 0.9rem;
-            margin: 15px 0 10px;
-            display: flex;
-            align-items: center;
-            font-weight: bold;
-        }
-
-        .section-title::before { content: "> "; margin-right: 5px; }
-
-        .data-grid {
-            border-left: 2px solid rgba(0, 255, 0, 0.3);
-            padding-left: 15px;
-            font-size: 0.8rem;
+        .riddle {
+            font-style: italic;
+            font-size: 1.1em;
+            margin: 20px 0;
             line-height: 1.6;
+            color: #f0e68c;
         }
 
-        .arsenal {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 10px;
-        }
-
-        .tag {
-            background: rgba(0, 255, 0, 0.15);
-            border: 1px solid var(--neon);
-            padding: 2px 8px;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-        }
-
-        .links-block {
-            margin-top: 25px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .btn {
-            border: 1px solid var(--neon);
-            color: var(--neon);
-            text-decoration: none;
+        input {
+            background: transparent;
+            border: 1px solid var(--gold);
             padding: 12px;
-            font-size: 0.75rem;
-            text-align: center;
-            transition: 0.3s;
-            background: rgba(0, 255, 0, 0.05);
+            color: white;
+            width: 80%;
+            border-radius: 5px;
+            font-size: 1em;
+            margin-bottom: 20px;
+            outline: none;
         }
 
-        .btn:active { background: var(--neon); color: black; }
+        button {
+            background: var(--gold);
+            color: var(--dark);
+            border: none;
+            padding: 12px 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
 
-        .footer-line {
-            margin-top: 20px;
-            font-size: 0.6rem;
-            opacity: 0.5;
-            text-align: center;
-            border-top: 1px dashed var(--neon);
-            padding-top: 10px;
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px var(--gold);
+        }
+
+        #result {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            border-top: 1px solid var(--gold);
+            animation: fadeIn 1s;
+        }
+
+        /* Падающие масти карт */
+        .symbol {
+            position: fixed;
+            top: -50px;
+            font-size: 24px;
+            color: rgba(212, 175, 55, 0.4);
+            user-select: none;
+            pointer-events: none;
+            z-index: 2;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-<canvas id="matrix"></canvas>
-
-<div class="main-container">
-    <div class="dossier-frame">
+    <div class="container">
+        <h1>С Днем Рождения, Катя!</h1>
+        <p>Ты попала в Кроличью нору. Чтобы найти свой подарок, ответь Безумному Шляпнику:</p>
         
-        <div class="avatar-container">
-            <img src="logo.png" alt="Invievil" class="avatar">
-            <div style="font-size: 0.7rem; margin-top: 10px;">invievil_github.png</div>
+        <div class="riddle">
+            "Всегда в пути, но нет ног.<br>
+            Всегда в движении, но нет рук.<br>
+            У неё есть начало, но нет конца...<br>
+            Что ведет тебя ко мне?"
         </div>
 
-        <div class="section-title">IDENTITY_FILE:</div>
-        <div class="data-grid">
-            // Name: <span style="color:white">Nikita</span><br>
-            // Access Level: <span style="color:red">ADMIN</span><br>
-            // Status: <span style="color:white">Junior Security Researcher</span><br>
-            // Building: <span style="color:white">Digital Garden (ALICE)</span>
-        </div>
+        <input type="text" id="answerInput" placeholder="Впиши ответ...">
+        <br>
+        <button onclick="check()">Открыть тайник</button>
 
-        <div class="section-title">ACCESS_LOGS:</div>
-        <div class="data-grid" style="font-size: 0.7rem; color: #888;">
-            > [2026-01-16] Initializing<br>
-            > [2026-01-17] Linux Audit<br>
-            > [2026-01-18] Designing Media Space
-        </div>
-
-        <div class="section-title">ARSENAL:</div>
-        <div class="arsenal">
-            <span class="tag">Python</span>
-            <span class="tag">WebSec</span>
-            <span class="tag">Linux</span>
-            <span class="tag">Obsidian</span>
-            <span class="tag">Crypto</span>
-            <span class="tag">Network</span>
-        </div>
-
-        <div class="section-title">CONNECT_TO_NODE:</div>
-        <div class="data-grid">
-            // Phone: <a href="tel:+77714912771" style="color:white; text-decoration:none;">+7 (771) 491-27-71</a>
-        </div>
-
-        <div class="links-block">
-            <a href="https://t.me/sseone" class="btn">TELEGRAM</a>
-            <a href="https://instagram.com/mne.ne.poh.ui" class="btn">INSTAGRAM</a>
-            <a href="https://github.com/Invievil" class="btn" style="grid-column: span 2;">End of File. System_Secured.</a>
-        </div>
-
-        <div class="footer-line">
-            FOOTTS: ----------------------------------
+        <div id="result">
+            <h2 style="color: #fff;">ПРАВИЛЬНО! 🗝️</h2>
+            <p>Твой подарок спрятан там, где [ЗДЕСЬ НАПИШИ МЕСТО].</p>
+            <p style="font-size: 0.8em;">(Всё страньше и страньше...)</p>
         </div>
     </div>
-</div>
 
-<script>
-    // Матрица на фоне
-    const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()";
-    const fontSize = 10;
-    const columns = canvas.width / fontSize;
-    const drops = [];
-    for (let i = 0; i < columns; i++) drops[i] = 1;
+    <script>
+        // Ответ: Любовь (или поменяй на свой)
+        const secret = "любовь"; 
 
-    function draw() {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "#0F0";
-        ctx.font = fontSize + "px monospace";
-        for (let i = 0; i < drops.length; i++) {
-            const text = letters[Math.floor(Math.random() * letters.length)];
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-            drops[i]++;
+        function check() {
+            const val = document.getElementById('answerInput').value.toLowerCase().trim();
+            if(val === secret) {
+                document.getElementById('result').style.display = 'block';
+                document.querySelector('button').style.display = 'none';
+                document.getElementById('answerInput').style.display = 'none';
+                createExplosion();
+            } else {
+                alert("Хмм... Чеширский кот говорит, что это неверно. Попробуй еще раз!");
+            }
         }
-    }
-    setInterval(draw, 33);
-</script>
 
+        // Создание падающих символов
+        const symbols = ['♥', '♦', '♣', '♠'];
+        function createSymbol() {
+            const el = document.createElement('div');
+            el.classList.add('symbol');
+            el.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 5000);
+        }
+        setInterval(createSymbol, 300);
+
+        // Эффект конфетти при победе
+        function createExplosion() {
+            for(let i=0; i<50; i++) {
+                setTimeout(createSymbol, i * 20);
+            }
+        }
+    </script>
 </body>
 </html>
