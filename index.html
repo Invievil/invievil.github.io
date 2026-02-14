@@ -1,191 +1,229 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для Кати • Страна Чудес</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Gabriela&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --gold: #d4af37;
-            --dark: #0a0a0a;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Для Кати ❤️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --pink:#ff5fa2; --violet:#7b61ff; --bg1:#0b0b14; --bg2:#120b24;
+      --glow: 0 0 20px rgba(255,95,162,.55), 0 0 60px rgba(123,97,255,.25);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{
+      font-family: Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:#fff;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, #1b1238 0%, transparent 60%),
+        radial-gradient(800px 500px at 90% 20%, #24124a 0%, transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+    .stars, .stars::after {
+      position: fixed; inset: 0; content:"";
+      background: transparent url("data:image/svg+xml;utf8,\
+      <svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'>\
+      <circle cx='10' cy='20' r='1' fill='white'/>\
+      <circle cx='200' cy='50' r='1.2' fill='white'/>\
+      <circle cx='120' cy='180' r='1' fill='white'/>\
+      <circle cx='260' cy='220' r='1.1' fill='white'/>\
+      <circle cx='40' cy='260' r='1' fill='white'/>\
+      </svg>") repeat;
+      animation: drift 120s linear infinite; opacity:.6;
+    }
+    .stars::after{animation-duration: 180s; opacity:.35}
+    @keyframes drift { from{transform:translateY(0)} to{transform:translateY(-1000px)} }
 
-        body {
-            margin: 0;
-            padding: 0;
-            background: var(--dark) url('https://images.nightcafe.studio/ik-seo/jobs/FcIzTu6ALwcrxAV1EvB6/FcIzTu6ALwcrxAV1EvB6--1--0pzt6/a-dark-3d-alice-in-wonderland-landscape-with-mushrooms-and-dark-red-rose-bushes-dark-trippy-evil-for.jpg?tr=w-1600,c-at_max') no-repeat center center fixed;
-            background-size: cover;
-            color: var(--gold);
-            font-family: 'Gabriela', serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
+    .container{ position:relative; min-height:100vh; display:grid; place-items:center; padding:24px; text-align:center; }
+    .card{
+      position:relative; max-width:980px; width:100%;
+      padding:48px 28px 56px; border-radius:24px;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+      backdrop-filter: blur(8px);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: 0 30px 80px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.15);
+      transform-style: preserve-3d;
+    }
+    h1{ font-family:"Playfair Display", serif; margin:0 0 10px; letter-spacing:.04em; font-size:clamp(34px,6vw,64px); text-shadow:var(--glow); }
+    .name{ display:inline-block; padding:8px 18px; border-radius:999px; background: linear-gradient(90deg, var(--pink), var(--violet)); box-shadow:var(--glow); margin:6px 0 14px; font-weight:700; letter-spacing:.06em;}
+    .subtitle{ opacity:.9; margin-bottom:18px; font-size:clamp(14px,2.8vw,18px); }
 
-        /* Затемнение фона для читаемости */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1;
-        }
+    .big-heart{ width:120px;height:120px;margin:12px auto 18px; filter: drop-shadow(0 0 30px rgba(255,95,162,.55)); animation:pulse 1.6s ease-in-out infinite;}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 
-        .container {
-            position: relative;
-            z-index: 10;
-            background: rgba(10, 10, 10, 0.85);
-            padding: 40px;
-            border-radius: 20px;
-            border: 2px solid var(--gold);
-            box-shadow: 0 0 40px rgba(212, 175, 55, 0.3);
-            max-width: 500px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
+    .message{ font-size:clamp(16px,3vw,20px); line-height:1.6; max-width:760px; margin:0 auto 20px; }
 
-        h1 {
-            font-family: 'Cinzel Decorative', cursive;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 0 0 15px var(--gold);
-            animation: glow 3s infinite alternate;
-        }
+    .actions{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:16px 0 10px; }
+    .cta{
+      padding:12px 18px; border-radius:14px; border:none; cursor:pointer;
+      background: linear-gradient(90deg, var(--violet), var(--pink)); color:#0b0618;
+      font-weight:700; letter-spacing:.04em; box-shadow:0 12px 30px rgba(123,97,255,.45);
+      transition:.15s ease;
+    }
+    .cta.secondary{ background: transparent; color:#fff; border:1px solid rgba(255,255,255,.25); box-shadow:none; }
+    .cta:hover{ transform:translateY(-2px); filter:saturate(1.1) }
 
-        @keyframes glow {
-            from { text-shadow: 0 0 10px var(--gold); }
-            to { text-shadow: 0 0 25px #fff, 0 0 35px var(--gold); }
-        }
+    /* Слайдер */
+    .slider{ position:relative; max-width:760px; margin:18px auto 8px; border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,.15); }
+    .slides{ display:flex; transition: transform .5s ease; }
+    .slide{ min-width:100%; aspect-ratio: 4/3; background:#111 center/cover no-repeat; }
+    .nav{ position:absolute; inset:0; display:flex; justify-content:space-between; align-items:center; pointer-events:none; }
+    .nav button{ pointer-events:auto; background:rgba(0,0,0,.45); color:#fff; border:none; border-radius:999px; width:40px; height:40px; margin:0 10px; cursor:pointer; }
 
-        .riddle {
-            font-style: italic;
-            font-size: 1.1em;
-            margin: 20px 0;
-            line-height: 1.6;
-            color: #f0e68c;
-        }
+    /* Луна-полёт */
+    .moon-flight{ position:relative; height:160px; margin:16px 0 6px; overflow:hidden; }
+    .rocket{ position:absolute; left:-60px; top:60px; font-size:28px; }
+    .moon{ position:absolute; right:-20px; top:24px; width:90px; height:90px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #fff, #cfd9ff 40%, #9aa7ff 60%, #6b6cff 75%, transparent 76%);
+      filter: drop-shadow(0 0 20px rgba(155,165,255,.45));
+    }
+    .flight-text{ position:absolute; left:50%; top:10px; transform:translateX(-50%); opacity:.85 }
 
-        input {
-            background: transparent;
-            border: 1px solid var(--gold);
-            padding: 12px;
-            color: white;
-            width: 80%;
-            border-radius: 5px;
-            font-size: 1em;
-            margin-bottom: 20px;
-            outline: none;
-        }
+    /* Плавающие сердечки */
+    .hearts{ position:fixed; inset:0; pointer-events:none; overflow:hidden }
+    .heart{ position:absolute; bottom:-20px; font-size:18px; animation: floatUp linear forwards; filter: drop-shadow(0 0 8px rgba(255,95,162,.55)); }
+    @keyframes floatUp{ from{ transform: translateY(0) translateX(0) scale(.8); opacity:.9 } to{ transform: translateY(-120vh) translateX(var(--x)) scale(1.2); opacity:0 } }
 
-        button {
-            background: var(--gold);
-            color: var(--dark);
-            border: none;
-            padding: 12px 30px;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: 0.3s;
-        }
+    /* Свечи */
+    .candles{ display:flex; gap:10px; justify-content:center; margin-top:6px; opacity:.8 }
+    .candle{ width:10px; height:30px; background:#ffd; border-radius:4px; position:relative; box-shadow: inset 0 -8px 0 rgba(255,170,0,.25); }
+    .flame{ position:absolute; top:-10px; left:50%; width:8px; height:12px; background: radial-gradient(circle at 50% 30%, #fff, #ffb703 60%, #ff5f00 75%); border-radius:50% 50% 50% 50%; transform: translateX(-50%); animation:flicker .2s infinite alternate; }
+    @keyframes flicker{ from{ transform:translateX(-50%) scale(1)} to{ transform:translateX(-50%) scale(1.08)} }
 
-        button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px var(--gold);
-        }
+    footer{ opacity:.65; font-size:12px; margin-top:10px }
 
-        #result {
-            display: none;
-            margin-top: 30px;
-            padding: 20px;
-            border-top: 1px solid var(--gold);
-            animation: fadeIn 1s;
-        }
-
-        /* Падающие масти карт */
-        .symbol {
-            position: fixed;
-            top: -50px;
-            font-size: 24px;
-            color: rgba(212, 175, 55, 0.4);
-            user-select: none;
-            pointer-events: none;
-            z-index: 2;
-            animation: fall linear forwards;
-        }
-
-        @keyframes fall {
-            to { transform: translateY(110vh) rotate(360deg); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-    </style>
+    @media (max-width:480px){
+      .card{padding:36px 16px 44px}
+      .big-heart{width:96px;height:96px}
+    }
+  </style>
 </head>
 <body>
+  <div class="stars"></div>
+  <div class="hearts" id="hearts"></div>
 
-    <div class="container">
-        <h1>С Днем Рождения, Катя!</h1>
-        <p>Ты попала в Кроличью нору. Чтобы найти свой подарок, ответь Безумному Шляпнику:</p>
-        
-        <div class="riddle">
-            "Всегда в пути, но нет ног.<br>
-            Всегда в движении, но нет рук.<br>
-            У неё есть начало, но нет конца...<br>
-            Что ведет тебя ко мне?"
+  <main class="container">
+    <section class="card" id="card">
+      <h1>С Днём всех влюблённых</h1>
+      <div class="name">Катя</div>
+      <p class="subtitle">Ты — мой дом, мой космос и мой лучший человек ✨</p>
+
+      <svg class="big-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 21s-7.2-4.6-9.5-8.5C.7 9.4 2.1 6 5.4 6c2 0 3.3 1.2 4 2.3.7-1.1 2-2.3 4-2.3 3.3 0 4.7 3.4 2.9 6.5C19.2 16.4 12 21 12 21z" fill="url(#g)"/>
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ff5fa2"/>
+            <stop offset="100%" stop-color="#7b61ff"/>
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <p class="message">
+        Катя, спасибо, что ты есть в моей жизни.  
+        Я люблю тебя до луны и обратно 🌙  
+        Каждый день с тобой — как маленькое чудо.
+      </p>
+
+      <!-- Слайдер: замени картинки на свои -->
+      <div class="slider" id="slider">
+        <div class="slides" id="slides">
+          <div class="slide" style="background-image:url('./photo1.jpg')"></div>
+          <div class="slide" style="background-image:url('./photo2.jpg')"></div>
+          <div class="slide" style="background-image:url('./photo3.jpg')"></div>
         </div>
-
-        <input type="text" id="answerInput" placeholder="Впиши ответ...">
-        <br>
-        <button onclick="check()">Открыть тайник</button>
-
-        <div id="result">
-            <h2 style="color: #fff;">ПРАВИЛЬНО! 🗝️</h2>
-            <p>Твой подарок спрятан там, где часто слышим с чистой попой или с легим паром.</p>
-            <p style="font-size: 0.8em;">(Всё страньше и страньше...)</p>
+        <div class="nav">
+          <button id="prev">‹</button>
+          <button id="next">›</button>
         </div>
-    </div>
+      </div>
 
-    <script>
-        // Ответ: Любовь 
-        const secret = "любовь"; 
+      <!-- Полёт к Луне -->
+      <div class="moon-flight">
+        <div class="flight-text">Люблю до луны и обратно 🚀🌙</div>
+        <div class="rocket" id="rocket">🚀</div>
+        <div class="moon"></div>
+      </div>
 
-        function check() {
-            const val = document.getElementById('answerInput').value.toLowerCase().trim();
-            if(val === secret) {
-                document.getElementById('result').style.display = 'block';
-                document.querySelector('button').style.display = 'none';
-                document.getElementById('answerInput').style.display = 'none';
-                createExplosion();
-            } else {
-                alert("Хмм... Чеширский кот говорит, что это неверно. Попробуй еще раз!");
-            }
-        }
+      <div class="actions">
+        <button class="cta" id="boom">Салют любви 💥</button>
+        <button class="cta secondary" id="musicBtn">Включить музыку 🎵</button>
+      </div>
 
-        // Создание падающих символов
-        const symbols = ['♥', '♦', '♣', '♠'];
-        function createSymbol() {
-            const el = document.createElement('div');
-            el.classList.add('symbol');
-            el.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
-            el.style.left = Math.random() * 100 + 'vw';
-            el.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 5000);
-        }
-        setInterval(createSymbol, 300);
+      <!-- Свечи -->
+      <div class="candles">
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+      </div>
 
-        // Эффект конфетти при победе
-        function createExplosion() {
-            for(let i=0; i<50; i++) {
-                setTimeout(createSymbol, i * 20);
-            }
-        }
-    </script>
+      <footer>Сделано с любовью и магией кода ❤️</footer>
+
+      <!-- Музыка: положи файл music.mp3 рядом -->
+      <audio id="music" src="./music.mp3" preload="auto" loop></audio>
+    </section>
+  </main>
+
+  <script>
+    // Сердечки
+    const hearts = document.getElementById('hearts');
+    const emojis = ["❤️","💖","💘","💞","✨","🌙"];
+    function spawnHeart(x=null){
+      const el = document.createElement('div');
+      el.className='heart';
+      el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      el.style.left = (x ?? Math.random()*innerWidth) + 'px';
+      el.style.setProperty('--x', (Math.random()*200 - 100) + 'px');
+      el.style.animationDuration = (6 + Math.random()*6) + 's';
+      hearts.appendChild(el);
+      setTimeout(()=>el.remove(), 14000);
+    }
+    setInterval(()=>spawnHeart(), 700);
+
+    // Салют
+    document.getElementById('boom').onclick = (e)=>{
+      const r = e.target.getBoundingClientRect();
+      const cx = r.left + r.width/2;
+      for(let i=0;i<36;i++) setTimeout(()=>spawnHeart(cx), i*25);
+    };
+
+    // Музыка (браузеры требуют клик)
+    const music = document.getElementById('music');
+    const musicBtn = document.getElementById('musicBtn');
+    let playing=false;
+    musicBtn.onclick = async ()=>{
+      try{
+        if(!playing){ await music.play(); musicBtn.textContent="Выключить музыку 🔇"; }
+        else{ music.pause(); musicBtn.textContent="Включить музыку 🎵"; }
+        playing=!playing;
+      }catch(e){ alert("Браузер блокирует автозапуск. Нажми ещё раз 🙂"); }
+    };
+
+    // Слайдер
+    const slides = document.getElementById('slides');
+    const total = slides.children.length;
+    let idx=0;
+    function render(){ slides.style.transform = `translateX(${-idx*100}%)`; }
+    document.getElementById('next').onclick = ()=>{ idx=(idx+1)%total; render(); };
+    document.getElementById('prev').onclick = ()=>{ idx=(idx-1+total)%total; render(); };
+
+    // Полёт ракеты
+    const rocket = document.getElementById('rocket');
+    let t=0;
+    setInterval(()=>{
+      t+=0.01;
+      rocket.style.left = (-60 + (innerWidth+120)*t) + 'px';
+      if(t>=1) t=0;
+    }, 16);
+
+    // Параллакс карточки
+    const card = document.getElementById('card');
+    document.addEventListener('mousemove', (e)=>{
+      const cx = innerWidth/2, cy = innerHeight/2;
+      const dx = (e.clientX - cx)/cx, dy = (e.clientY - cy)/cy;
+      card.style.transform = `rotateX(${(-dy*4).toFixed(2)}deg) rotateY(${(dx*4).toFixed(2)}deg)`;
+    });
+  </script>
 </body>
 </html>
